@@ -1,0 +1,49 @@
+
+#include "mbed.h" //FIR
+#define M 29
+
+AnalogIn adc19(p19);
+Ticker interrupcion;
+AnalogOut dac18(p18);
+short k;
+float x1[M]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+float g=1.00000000000f
+
+const float a[M]= {
+  -0.00063695292919874191,              
+-0.0091721117496490479,               
+ 0.03688855841755867,                 
+-0.10847613215446472,                 
+ 0.16301539540290833,                 
+ 0.79030764102935791,                 
+ 0.16301539540290833,                 
+-0.10847613215446472,                 
+ 0.03688855841755867,                 
+-0.0091721117496490479,               
+-0.00063695292919874191
+ };
+/*
+float map(float x, float in_min, float in_max, float out_min, float out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+
+ dac=map(y1[0],-1,1,0,1);
+ 
+ dac18=dac;
+ 
+ } 
+ */
+ void Fir(){
+            for( k=M-1; k>=1; k-- ){x[k]=x[k-1];}
+            x[0]=adc19.read();
+            for( k=0; k<M; k++ ){yn += h[k]*x[k];}
+            }
+
+
+int main() {
+ interrupcion.attach_us(&Fir,1000.00);// periodo de muestreo
+ 
+ while(1){}
+}
